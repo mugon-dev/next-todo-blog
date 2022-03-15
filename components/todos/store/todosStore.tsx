@@ -1,12 +1,9 @@
+import axios from "axios";
 import { configure, makeAutoObservable } from "mobx";
+import { ITodoModel } from "../../../imodels/ITodoModel";
 configure({
   enforceActions: "never",
 });
-export interface ITodoModel {
-  id: number;
-  text: string;
-  done: boolean;
-}
 
 class TodosStore {
   todosList: ITodoModel[] = [];
@@ -32,7 +29,19 @@ class TodosStore {
   }
 
   deleteTodo = (id: number) => {
-    this.todosList.filter((todo) => todo.id !== id);
+    this.todosList = this.todosList.filter((todo) => todo.id !== id);
+  };
+
+  getTodosFromApi = async () => {
+    try {
+      const apiUrl =
+        "https://raw.githubusercontent.com/jherr/todos-four-ways/master/data/todos.json";
+      let todosListFromApi = await axios.get(apiUrl);
+      this.todosList = todosListFromApi.data;
+      this.todo = this.resetTodoData();
+    } catch (error) {
+      console.log(`error ${error}`);
+    }
   };
 }
 

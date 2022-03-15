@@ -1,7 +1,16 @@
-import { Button, Checkbox, Flex, Heading, Input } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Spacer,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import todosStore, { ITodoModel } from "../store/todosStore";
+import { ITodoModel } from "../../../imodels/ITodoModel";
+import todosStore from "../store/todosStore";
 
 function TodoListItems() {
   return (
@@ -12,7 +21,7 @@ function TodoListItems() {
           <Input
             position="static"
             mx={2}
-            value={todo.text}
+            value={`${todo.id} ${todo.text}`}
             onChange={(evt) => DOMRectReadOnly}
           />
           <Button
@@ -32,7 +41,16 @@ const TodoListObserver = observer(TodoListItems);
 export default function TodoList() {
   return (
     <>
-      <Heading>Todo List</Heading>
+      <HStack>
+        <Heading>Todo List</Heading>
+        <Spacer />
+        <Button
+          position={"static"}
+          onClick={() => todosStore.getTodosFromApi()}
+        >
+          Load Todos From Api
+        </Button>
+      </HStack>
       <TodoListObserver />
     </>
   );
