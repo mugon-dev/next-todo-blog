@@ -1,13 +1,15 @@
 import axios from "axios";
 import { GetStaticProps } from "next";
 import React from "react";
+import todosStore from "../../components/todos/store/todosStore";
 import TodosCompIndex from "../../components/todos/ui/TodosCompIndex";
 import { ITodoModel } from "../../imodels/ITodoModel";
 
 export default function TodosIndex({ todosList }: { todosList: ITodoModel[] }) {
+  todosStore.todosList = todosList;
   return (
     <>
-      <TodosCompIndex />
+      <TodosCompIndex myTodoList={todosList} />
       {todosList.map((todo: ITodoModel) => (
         <h1 key={todo.id}>{todo.text}</h1>
       ))}
